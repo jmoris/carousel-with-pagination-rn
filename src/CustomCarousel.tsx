@@ -69,9 +69,11 @@ const CustomCarousel = forwardRef<RefProps, CustomCarouselProps>(
       flatlistRef.current?.scrollToIndex({ index: index });
     };
 
-    const onViewableItemsChanged = useRef(({ viewableItems }: any) => {
-      setCurrentItemIndex(viewableItems[0].index);
-    }).current;
+    const onViewableItemsChanged = useRef(({ viewableItems }) => {
+      if(viewableItems.length > 0){
+        setCurrentItemIndex(viewableItems[0].index);
+      }
+    });
 
     const viewabilityConfig = useRef({
       itemVisiblePercentThreshold: 50,
@@ -94,7 +96,7 @@ const CustomCarousel = forwardRef<RefProps, CustomCarouselProps>(
           snapToAlignment="center"
           onScroll={handleScroll}
           viewabilityConfig={viewabilityConfig}
-          onViewableItemsChanged={onViewableItemsChanged}
+          onViewableItemsChanged={onViewableItemsChanged.current}
           onEndReached={endReached}
         />
         {!disablePagination && (
